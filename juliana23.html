@@ -1,238 +1,93 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Personal Information</title>
+  <meta charset="UTF-8">
+  <title>Personal Information Form</title>
   <style>
-    /* ---------- Background design ---------- */
-    :root {
-      --bg1: #0f172a;
-      --bg2: #1e293b;
-      --accent1: #06b6d4;
-      --accent2: #8b5cf6;
-      --card: rgba(255, 255, 255, 0.12);
-      --border: rgba(255, 255, 255, 0.25);
-      --text: #e5e7eb;
-    }
-
-    * { box-sizing: border-box; }
-
     body {
       margin: 0;
-      min-height: 100vh;
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
-      color: var(--text);
-      background: radial-gradient(1200px 600px at 10% 10%, #0ea5e9 0%, transparent 35%),
-                  radial-gradient(1000px 500px at 90% 20%, #a78bfa 0%, transparent 35%),
-                  linear-gradient(135deg, var(--bg1), var(--bg2));
-      overflow: hidden;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      background-image: url('hello.jpg'); /* Replace with your image path */
+      background-size: cover;
+      background-position: center;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
 
-    /* Soft animated glow blobs */
-    .glow {
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      filter: blur(40px);
-      opacity: 0.35;
-    }
-    .blob {
-      position: absolute;
-      width: 420px;
-      height: 420px;
-      border-radius: 50%;
-      background: radial-gradient(circle at 30% 30%, var(--accent1), transparent 60%);
-      animation: float 12s ease-in-out infinite;
-    }
-    .blob:nth-child(2) {
-      left: 65%;
-      top: 15%;
-      background: radial-gradient(circle at 70% 70%, var(--accent2), transparent 60%);
-      animation-delay: 3s;
-    }
-    .blob:nth-child(3) {
-      left: 20%;
-      top: 70%;
-      background: radial-gradient(circle at 50% 50%, #22d3ee, transparent 60%);
-      animation-delay: 6s;
-    }
-    @keyframes float {
-      0%,100% { transform: translateY(0) translateX(0) scale(1); }
-      50%     { transform: translateY(-20px) translateX(10px) scale(1.05); }
+    .form-container {
+      background: rgba(255, 255, 255, 0.85); /* semi-transparent white */
+      padding: 30px;
+      border-radius: 10px;
+      width: 350px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
     }
 
-    /* ---------- Layout ---------- */
-    .wrap {
-      position: relative;
-      z-index: 1;
-      display: grid;
-      place-items: center;
-      min-height: 100vh;
-      padding: 40px 20px;
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #333;
     }
-
-    .card {
-      width: 100%;
-      max-width: 560px;
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 18px;
-      backdrop-filter: blur(12px);
-      box-shadow: 0 20px 50px rgba(0,0,0,0.35);
-      padding: 28px;
-    }
-
-    .title {
-      margin: 0 0 18px;
-      font-weight: 700;
-      letter-spacing: 0.3px;
-    }
-    .subtitle {
-      margin: 0 0 24px;
-      color: #cbd5e1;
-      font-size: 0.95rem;
-    }
-
-    /* ---------- Form ---------- */
-    .grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 14px;
-    }
-    .grid-full { grid-column: 1 / -1; }
 
     label {
+      font-weight: bold;
       display: block;
-      font-size: 0.85rem;
-      color: #cbd5e1;
-      margin-bottom: 6px;
+      margin-top: 10px;
     }
 
-    input, select, textarea {
+    input, textarea {
       width: 100%;
-      padding: 10px 12px;
-      border-radius: 10px;
-      border: 1px solid rgba(255,255,255,0.25);
-      background: rgba(17, 24, 39, 0.45);
-      color: var(--text);
-      outline: none;
-      transition: border-color 0.2s ease, box-shadow 0.2s ease;
-    }
-    input::placeholder, textarea::placeholder { color: #94a3b8; }
-    input:focus, select:focus, textarea:focus {
-      border-color: #67e8f9;
-      box-shadow: 0 0 0 3px rgba(103, 232, 249, 0.25);
+      padding: 8px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
     }
 
-    .actions {
-      display: flex;
-      gap: 12px;
-      margin-top: 18px;
-    }
-    .btn {
-      flex: 1;
-      padding: 12px 14px;
-      border: none;
-      border-radius: 12px;
-      cursor: pointer;
-      font-weight: 600;
-      letter-spacing: 0.2px;
-      transition: transform 0.08s ease, filter 0.2s ease;
-    }
-    .btn-primary {
-      background: linear-gradient(135deg, #06b6d4, #8b5cf6);
+    input[type="submit"] {
+      background-color: #4CAF50;
       color: white;
-    }
-    .btn-secondary {
-      background: rgba(148,163,184,0.25);
-      color: #e5e7eb;
-      border: 1px solid rgba(255,255,255,0.2);
-    }
-    .btn:hover { filter: brightness(1.05); }
-    .btn:active { transform: scale(0.98); }
-
-    /* ---------- Footer note ---------- */
-    .note {
-      margin-top: 14px;
-      font-size: 0.85rem;
-      color: #94a3b8;
-      text-align: center;
+      border: none;
+      margin-top: 15px;
+      cursor: pointer;
+      font-size: 16px;
     }
 
-    /* ---------- Responsive ---------- */
-    @media (max-width: 640px) {
-      .grid { grid-template-columns: 1fr; }
+    input[type="submit"]:hover {
+      background-color: #45a049;
     }
   </style>
 </head>
 <body>
+   <body>
+  <div class="info-box">
+    <div class="form-container">
+    <h2>Personal Information</h2>
+    <p><span class="label">Full Name:</span> Juliana M. Dago</p>
+    <p><span class="label">Email:</span> julianamisamendago5304@gmail.com</p>
+    <p><span class="label">Phone:</span> 09705040864</p>
+    <p><span class="label">Address:</span> Barusbus, Libertad, Antique</p>
+    <br> 
+<h3>Hobbies</h3>
+<ul>
+    <li>Reading Wattpad/Jonaxx</li>
+    <li>Watching Anime/ Horror movies</li>
+    <li>Eating</li>
+    <li>Sleeping</li>
+</ul>   
 
-  <!-- Decorative background blobs -->
-  <div class="glow" aria-hidden="true">
-    <div class="blob" style="left: 5%; top: 10%;"></div>
-    <div class="blob"></div>
-    <div class="blob"></div>
+<h3>Facts About Me</h3>
+<ul>
+    <li><p>I was born on May 3, 2004</p></li>
+    <li><p> I love color green, like how I love someone.</p></li>
+    <li><p>My favorite anime is Slamdunk, hunterxhunter, naruto, and one piece</p></li>
+    <li><p>my favorite flower is lilly of the valley</p></li>
+    <li><p>I'm inlove in men, written by Jonaxx</p></li>
+    <li><p>I believe that Luffy will be find One Piece</p></li>
+    <li><p>I still like Dimasalang</p></li>
+</ul>
   </div>
 
-  <div class="wrap">
-    <div class="card">
-      <h1 class="title">Personal information</h1>
-      <p class="subtitle">Fill in your details below. The design uses a soft neon gradient background with a glass card.</p>
-
-      <form action="#" method="post" novalidate>
-        <div class="grid">
-          <div>
-            <label for="fname">First name</label>
-            <input id="fname" name="fname" type="text" placeholder="e.g., Juan" required />
-          </div>
-
-          <div>
-            <label for="lname">Last name</label>
-            <input id="lname" name="lname" type="text" placeholder="e.g., Dela Cruz" required />
-          </div>
-
-          <div>
-            <label for="age">Age</label>
-            <input id="age" name="age" type="number" min="0" placeholder="e.g., 30" />
-          </div>
-
-          <div>
-            <label for="gender">Gender</label>
-            <select id="gender" name="gender">
-              <option value="">Select</option>
-              <option>Male</option>
-              <option>Female</option>
-              <option>Non-binary</option>
-              <option>Prefer not to say</option>
-              <option>Other</option>
-            </select>
-          </div>
-
-          <div class="grid-full">
-            <label for="email">Email</label>
-            <input id="email" name="email" type="email" placeholder="e.g., juan.delacruz@example.com" />
-          </div>
-
-          <div class="grid-full">
-            <label for="phone">Phone</label>
-            <input id="phone" name="phone" type="tel" placeholder="e.g., +63 912 345 6789" />
-          </div>
-
-          <div class="grid-full">
-            <label for="address">Address</label>
-            <textarea id="address" name="address" rows="2" placeholder="Street, Barangay, City, Province"></textarea>
-          </div>
-        </div>
-
-        <div class="actions">
-          <button class="btn btn-primary" type="submit">Submit</button>
-          <button class="btn btn-secondary" type="reset">Reset</button>
-        </div>
-
-        <p class="note">This is a static demo. Connect to a backend to save submissions.</p>
-      </form>
-    </div>
-  </div>
 </body>
 </html>
